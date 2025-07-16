@@ -334,18 +334,31 @@ window.addEventListener('DOMContentLoaded', () => {
     // Vérifie si on revient de la plateforme de paiement avec un paramètre de succès
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('paiement') && urlParams.get('paiement') === 'success' && urlParams.has('reference')) {
-        // Vérifie le statut du paiement et met à jour la page sans reload
-        verifierStatutPaiement(urlParams.get('reference')).then(() => {
-            // Réinitialise le formulaire après succès
-            if (form) form.reset();
-            // Recharge dynamiquement les infos de formation (tickets)
-            chargerFormation();
-            // Nettoie l'URL pour enlever les paramètres (optionnel)
-            if (window.history.replaceState) {
-                const cleanUrl = window.location.origin + window.location.pathname;
-                window.history.replaceState({}, document.title, cleanUrl);
-            }
-        });
+        // Polling pour vérifier le statut du paiement jusqu'à confirmation (max 32s)
+        const reference = urlParams.get('reference');
+        let pollingCount = 0;
+        const maxPolling = 32 / 3; // 32 secondes max, intervalle 3s
+        function pollPaiement() {
+            verifierStatutPaiement(reference).then(() => {
+                // On vérifie si le toast de succès a été affiché (flag localStorage)
+                if (localStorage.getItem('showMailToast') === '1') {
+                    // Paiement confirmé, on arrête le polling
+                    if (form) form.reset();
+                    chargerFormation();
+                    if (window.history.replaceState) {
+                        const cleanUrl = window.location.origin + window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }
+                    // On laisse le toast s'afficher
+                } else if (++pollingCount < maxPolling) {
+                    setTimeout(pollPaiement, 3000);
+                } else {
+                    // Après 32s, on arrête le polling même si pas confirmé
+                    showToast('Le paiement est toujours en attente de confirmation. Veuillez patienter ou contacter le support.', 'error');
+                }
+            });
+        }
+        pollPaiement();
     } else {
         // Chargement de la formation normal
         chargerFormation();
