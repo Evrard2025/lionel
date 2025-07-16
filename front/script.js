@@ -1,7 +1,7 @@
 // Configuration de l'API
 const isProduction = window.location.hostname === 'www.kectombolaformation.com'; // Ou d'autres conditions pour la production
 const API_URL = isProduction 
-    ? 'https://www.kectombolaformation.com/api' // Utiliser HTTPS en production (fortement recommandé)
+    ? 'https://lionel-bzdx.onrender.com/api' // Utiliser HTTPS en production (fortement recommandé)
     : 'http://localhost:5000/api'; // Utiliser le port de développement local
 
 console.log(`Using API URL: ${API_URL}`); // Ajout d'un log pour vérifier l'URL utilisée
