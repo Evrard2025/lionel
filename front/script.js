@@ -289,7 +289,7 @@ function showToast(message, type = 'success') {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(-30px)';
         setTimeout(() => toast.remove(), 500);
-    }, 2000);
+    }, type === 'success' ? 8000 : 2000);
 }
 
 // Modifie initierPaiement pour afficher le loader
