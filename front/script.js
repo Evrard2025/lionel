@@ -69,6 +69,7 @@ async function verifierStatutPaiement(reference) {
 
         // Gestion des statuts de paiement
         if (data.statut === 'payé' || data.emailStatus === 'envoye') {
+            localStorage.setItem('showMailToast', '1');
             statusMessage.style.backgroundColor = '#4CAF50';
             statusMessage.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -321,6 +322,10 @@ async function initierPaiement(userId) {
 
 // Ajout d'un écouteur pour réinitialiser la page après succès du paiement (reçu envoyé)
 window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('showMailToast') === '1') {
+        showToast('Votre reçu a été envoyé par mail !', 'success');
+        localStorage.removeItem('showMailToast');
+    }
     // Gestion du formulaire d'inscription
     const form = document.querySelector('.cta-form');
     if (form) {
