@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEC GROUP - Plateforme de Formations Expertes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --primary-dark: #00c2ff;
+            --secondary: #7b2dff;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --light: #f0f0ff;
+            --card-bg: rgba(20, 20, 50, 0.6);
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(123, 45, 255, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(0, 247, 255, 0.15) 0%, transparent 30%);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            z-index: -2;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.5"/></svg>');
+            background-size: 2%;
+            opacity: 0.3;
+            animation: particlesMove 100s linear infinite;
+        }
+
+        @keyframes particlesMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            background: var(--glass);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 200px;
+            height: 160px;
+            margin: 0 auto 5px;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(0, 247, 255, 0.3));
+            transition: all 0.3s ease;
+            background-color: white;
+            padding: 0px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px rgba(0, 247, 255, 0.5));
+        }
+
+        .header-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 0%,
+                transparent 45%,
+                var(--primary) 50%,
+                transparent 55%,
+                transparent 100%
+            );
+            animation: shine 6s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-50%, -50%); }
+            100% { transform: rotate(360deg) translate(-50%, -50%); }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 247, 255, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(0, 247, 255, 0.6), 0 0 30px rgba(0, 247, 255, 0.3); }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .cta-form {
+            max-width: 500px;
+            width: 100%;
+            margin: 0;
+            display: grid;
+            gap: 15px;
+        }
+        
+        .header-image {
+            width: 500px;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+            object-fit: cover;
+        }
+
+        .form-input {
+            background: rgba(10, 10, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px 20px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 247, 255, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--dark);
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.2);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .section {
+            padding: 100px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 247, 255, 0.05), transparent);
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 247, 255, 0.1);
+            border-color: rgba(0, 247, 255, 0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(110%);
+            transition: all 0.4s ease;
+        }
+
+        .card:hover .card-image {
+            filter: grayscale(0%) contrast(120%);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .card-text {
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .card-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .card-button:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .about-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+            position: relative;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Q50,80 0,100 Z" fill="%2300f7ff" opacity="0.03"/></svg>');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center top;
+        }
+
+        .trainer-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .trainer-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.5);
+        }
+
+        .about-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .about-text {
+            max-width: 700px;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--dark);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 30px 20px;
+            }
+            
+            .header-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header-image {
+                width: 100%;
+                max-width: 500px;
+                margin-top: 20px;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 60px 20px;
+            }
+        }
+
+        /* Ajout des styles pour les informations de formation */
+        .formation-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--glass);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .formation-info h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .tickets-info {
+            color: var(--primary);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .price-info, .duration-info {
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+
+        .card-flex {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            min-height: 500px;
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 1.18rem;
+        }
+        .card-content {
+            flex: 1 1 0;
+            padding: 50px 50px 50px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card-image-container {
+            flex: 0 0 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            padding: 0;
+        }
+        .card-image-tombola {
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            max-height: 480px;
+            object-fit: contain;
+            border-radius: 0 15px 15px 0;
+            
+        }
+        @media (max-width: 900px) {
+            .card-flex {
+                flex-direction: column;
+                min-height: unset;
+                max-width: 100%;
+            }
+            .card-image-container {
+                flex: unset;
+                max-width: 100%;
+                padding: 0;
+            }
+            .card-image-tombola {
+                border-radius: 0 0 15px 15px;
+                max-width: 100%;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-bg"></div>
+    <div class="particles"></div>
+    <div class="header-content floating">
+        <img src="logo.png" alt="KEC GROUP Logo" class="logo">
+        <h1>KEC GROUP</h1>
+        <p class="subtitle">Maîtrisez les technologies financières de demain avec nos formations expertes en comptabilité, fiscalité et analyse financière avancée.</p>
+        <div class="header-row">
+            <form class="cta-form">
+                <div class="form-instruction" style="width:100%;text-align:center;margin-bottom:15px;font-size:1.1rem;color:var(--primary);font-weight:600;">Veuillez remplir le formulaire pour prendre votre ticket</div>
+                <input type="text" class="form-input" placeholder="Votre nom complet" required>
+                <input type="email" class="form-input" placeholder="Votre email professionnel" required>
+                <input type="tel" class="form-input" placeholder="Votre numéro de téléphone" required>
+                <input type="text" class="form-input" name="niveauEtude" placeholder="Votre niveau d'étude" required>
+                <input type="hidden" name="formationChoisie" value="1">
+                <button type="submit" class="cta-button">Prendre mon ticket à 1000 fcfa</button>
+            </form>
+            <img src="tombola_1.jpg" alt="Tombola Formation Comptabilité" class="header-image">
+        </div>
+    </div>
+</header>
+
+<section class="section">
+    <h2 class="section-title">NOS PROGRAMMES EXPERTS</h2>
+    <div class="cards-container">
+        <div class="card card-flex">
+            <div class="card-content">
+                <h3 class="card-title">Masterclass Fiscalité</h3>
+                <p class="card-text">Décryptez les dernières réformes fiscales et optimisez la stratégie financière de vos clients avec nos méthodes innovantes.</p>
+                <a href="#" class="card-button">En savoir plus</a>
+            </div>
+            <div class="card-image-container">
+                <img src="tombola.jpg" alt="Tombola Affiche" class="card-image-tombola">
+            </div>
+        </div>
+        <div class="card card-flex">
+            <div class="card-content">
+                <h3 class="card-title">Comptabilité</h3>
+                <p class="card-text">Intégrez les technologies distribuées dans vos processus comptables pour gagner en transparence et en efficacité.</p>
+                <a href="#" class="card-button">En savoir plus</a>
+            </div>
+            <div class="card-image-container">
+                <img src="tombola.jpg" alt="Tombola Affiche" class="card-image-tombola">
+            </div>
+        </div>
+        <div class="card card-flex">
+            <div class="card-content">
+                <h3 class="card-title">Finance Predictive</h3>
+                <p class="card-text">Utilisez l'IA et le machine learning pour anticiper les tendances financières et prendre des décisions éclairées.</p>
+                <a href="#" class="card-button">En savoir plus</a>
+            </div>
+            <div class="card-image-container">
+                <img src="tombola.jpg" alt="Tombola Affiche" class="card-image-tombola">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">NOTRE MÉTHODOLOGIE</h2>
+    <div class="cards-container">
+        <div class="card">
+            <img src="https://boostalab.com/wp-content/uploads/2022/04/culture-d-apprentissage-benefices.png" alt="Module 1" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Apprentissage Immersif</h3>
+                <p class="card-text">Plongez dans des simulations réalistes avec nos environnements virtuels dédiés à la pratique professionnelle.</p>
+                <a href="#" class="card-button">Découvrir</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Module 2" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Outils Digitaux</h3>
+                <p class="card-text">Maîtrisez les logiciels les plus récents avec nos ateliers pratiques guidés par des experts.</p>
+                <a href="#" class="card-button">Découvrir</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Module 3" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Certification</h3>
+                <p class="card-text">Validez vos compétences avec des certifications reconnues par les plus grandes institutions financières.</p>
+                <a href="#" class="card-button">Découvrir</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <!--
+    <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Formateur" class="trainer-image"> 
+-->
+    <h2 class="about-title">DIRECTION PÉDAGOGIQUE</h2>
+    <p class="about-text">Lionel BATIONO, comptable et CEO de KEC GROUP, cumule de plusieurs années d'expérience au sein des institutions financières. Son approche révolutionnaire intègre les technologies émergentes aux pratiques comptables traditionnelles.</p>
+    <div class="social-links">
+        <a href="#" class="social-link">FB</a>
+        <a href="#" class="social-link">WH</a>
+        <a href="#" class="social-link">TW</a>
+    </div>
+</section>
+
+<footer>
+    <p class="footer-text">© 2025 KEC GROUP | Tous droits réservés - développé par SMART | Conçu pour les professionnels de demain</p>
+</footer>
+
+<script src="script.js"></script>
+<!-- Le code JavaScript a été déplacé dans le fichier script.js pour une meilleure organisation. -->
+
+</body>
+</html>
