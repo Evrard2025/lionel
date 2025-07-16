@@ -328,23 +328,23 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     // Gestion du formulaire d'inscription
     const form = document.querySelector('.cta-form');
-    if (form) {
-        form.addEventListener('submit', handleInscription);
-    }
-
     // Vérifie si on revient de la plateforme de paiement avec un paramètre de succès
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('paiement') && urlParams.get('paiement') === 'success' && urlParams.has('reference')) {
-        // Vérifie le statut du paiement et réinitialise la page après succès
+        // Vérifie le statut du paiement et met à jour la page sans reload
         verifierStatutPaiement(urlParams.get('reference')).then(() => {
-            // Réinitialise le formulaire et la page après 2 secondes
-            setTimeout(() => {
-                if (form) form.reset();
-                window.location.href = window.location.pathname;
-            }, 2000);
+            // Réinitialise le formulaire après succès
+            if (form) form.reset();
+            // Recharge dynamiquement les infos de formation (tickets)
+            chargerFormation();
+            // Nettoie l'URL pour enlever les paramètres (optionnel)
+            if (window.history.replaceState) {
+                const cleanUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
         });
+    } else {
+        // Chargement de la formation normal
+        chargerFormation();
     }
-
-    // Chargement de la formation
-    chargerFormation();
 }); 
