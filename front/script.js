@@ -6,6 +6,32 @@ const API_URL = isProduction
 
 console.log(`Using API URL: ${API_URL}`); // Ajout d'un log pour vérifier l'URL utilisée
 
+// Ajout du loader visuel
+function showLoader(message = "Redirection en cours...") {
+    let loader = document.getElementById('kec-loader');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'kec-loader';
+        loader.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(255,255,255,0.8); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 99999;
+        `;
+        loader.innerHTML = `
+            <div class="spinner" style="border: 6px solid #eee; border-top: 6px solid #1874a5; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;"></div>
+            <div style="margin-top: 18px; font-size: 1.2em; color: #1874a5;">${message}</div>
+            <style>
+                @keyframes spin { 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+        document.body.appendChild(loader);
+    }
+}
+function hideLoader() {
+    const loader = document.getElementById('kec-loader');
+    if (loader) loader.remove();
+}
+
 // Fonction pour vérifier le statut du paiement
 async function verifierStatutPaiement(reference) {
     try {
@@ -53,6 +79,7 @@ async function verifierStatutPaiement(reference) {
                 </div>
                 <div style='font-size:0.95em;margin-top:6px;'>Statut: payé<br>Dernière mise à jour: ${new Date().toLocaleString()}</div>
             `;
+            showToast('Votre reçu a été envoyé par mail !', 'success');
         } else if (data.statut === 'échoué' || data.status === 'failed' || data.emailStatus === 'erreur') {
             statusMessage.style.backgroundColor = '#f44336';
             statusMessage.innerHTML = `
@@ -265,9 +292,10 @@ function showToast(message, type = 'success') {
     }, 2000);
 }
 
-// Fonction pour initier le paiement
+// Modifie initierPaiement pour afficher le loader
 async function initierPaiement(userId) {
     try {
+        showLoader("Redirection vers la plateforme de paiement...");
         const response = await fetch(`${API_URL}/paiements/initier`, {
             method: 'POST',
             headers: {
@@ -278,17 +306,15 @@ async function initierPaiement(userId) {
                 formationId: 1 // ID fixe de la formation
             })
         });
-
         const data = await response.json();
-
         if (response.ok && data.checkoutUrl) {
-            // Redirection automatique et rapide vers la plateforme de paiement
             window.location.href = data.checkoutUrl;
         } else {
+            hideLoader();
             alert(data.error || 'Erreur lors de l\'initialisation du paiement');
         }
     } catch (error) {
-        console.error('Erreur lors de l\'initialisation du paiement:', error);
+        hideLoader();
         alert('Erreur lors de l\'initialisation du paiement');
     }
 }
