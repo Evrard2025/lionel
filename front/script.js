@@ -328,6 +328,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     // Gestion du formulaire d'inscription
     const form = document.querySelector('.cta-form');
+    if (form) {
+        form.addEventListener('submit', handleInscription);
+    }
     // Vérifie si on revient de la plateforme de paiement avec un paramètre de succès
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('paiement') && urlParams.get('paiement') === 'success' && urlParams.has('reference')) {
