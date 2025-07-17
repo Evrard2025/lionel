@@ -8,5 +8,6 @@ router.post('/', paiementController.createPaiement);           // Créer un nouv
 router.get('/:id', paiementController.getPaiement);           // Récupérer un paiement
 router.put('/:id/status', paiementController.updateStatus);   // Mettre à jour le statut d'un paiement
 router.post('/webhook', paiementController.webhookPaiement);  // Webhook pour les notifications
+router.get('/statut/:reference', paiementController.getPaiementByReference);
 
 module.exports = router;

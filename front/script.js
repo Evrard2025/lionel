@@ -35,17 +35,7 @@ function hideLoader() {
 // Fonction pour vérifier le statut du paiement
 async function verifierStatutPaiement(reference) {
     try {
-        const response = await fetch(`${API_URL}/paiements/webhook`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                reference: reference,
-                status: 'success'
-            })
-        });
-
+        const response = await fetch(`${API_URL}/paiements/statut/${reference}`);
         const data = await response.json();
         console.log('Réponse backend statut paiement:', data); // DEBUG
         // Créer ou mettre à jour le message de statut

@@ -153,6 +153,22 @@ exports.getPaiement = async (req, res) => {
   }
 };
 
+// Nouvelle route pour vérifier le statut d'un paiement par référence
+exports.getPaiementByReference = async (req, res) => {
+  try {
+    const paiement = await Paiement.findOne({ where: { reference: req.params.reference } });
+    if (!paiement) {
+      return res.status(404).json({ error: 'Paiement non trouvé' });
+    }
+    res.status(200).json({
+      statut: paiement.statut,
+      emailStatus: paiement.statut === 'payé' ? 'envoye' : 'non_envoye'
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur lors de la récupération du paiement' });
+  }
+};
+
 // Mettre à jour le statut d'un paiement
 exports.updateStatus = async (req, res) => {
   try {
