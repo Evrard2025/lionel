@@ -293,7 +293,7 @@ function showToast(message, type = 'success') {
     }, type === 'success' ? 8000 : 2000);
 }
 
-// Modifie initierPaiement pour afficher le loader
+// Modifie initierPaiement pour stocker la référence avant la redirection
 async function initierPaiement(userId) {
     try {
         showLoader("Redirection vers la plateforme de paiement...");
@@ -309,6 +309,10 @@ async function initierPaiement(userId) {
         });
         const data = await response.json();
         if (response.ok && data.checkoutUrl) {
+            // Stocke la référence du paiement dans localStorage
+            if (data.reference) {
+                localStorage.setItem('lastPaiementReference', data.reference);
+            }
             window.location.href = data.checkoutUrl;
         } else {
             hideLoader();
@@ -331,30 +335,26 @@ window.addEventListener('DOMContentLoaded', () => {
     if (form) {
         form.addEventListener('submit', handleInscription);
     }
-    // Vérifie si on revient de la plateforme de paiement avec un paramètre de succès
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('paiement') && urlParams.get('paiement') === 'success' && urlParams.has('reference')) {
-        // Polling pour vérifier le statut du paiement jusqu'à confirmation (max 32s)
-        const reference = urlParams.get('reference');
+    // Polling automatique si une référence de paiement est présente dans localStorage
+    const lastRef = localStorage.getItem('lastPaiementReference');
+    if (lastRef) {
         let pollingCount = 0;
         const maxPolling = 32 / 3; // 32 secondes max, intervalle 3s
         function pollPaiement() {
-            verifierStatutPaiement(reference).then(() => {
-                // On vérifie si le toast de succès a été affiché (flag localStorage)
+            verifierStatutPaiement(lastRef).then(() => {
                 if (localStorage.getItem('showMailToast') === '1') {
-                    // Paiement confirmé, on arrête le polling
                     if (form) form.reset();
                     chargerFormation();
+                    localStorage.removeItem('lastPaiementReference');
                     if (window.history.replaceState) {
                         const cleanUrl = window.location.origin + window.location.pathname;
                         window.history.replaceState({}, document.title, cleanUrl);
                     }
-                    // On laisse le toast s'afficher
                 } else if (++pollingCount < maxPolling) {
                     setTimeout(pollPaiement, 3000);
                 } else {
-                    // Après 32s, on arrête le polling même si pas confirmé
                     showToast('Le paiement est toujours en attente de confirmation. Veuillez patienter ou contacter le support.', 'error');
+                    localStorage.removeItem('lastPaiementReference');
                 }
             });
         }
