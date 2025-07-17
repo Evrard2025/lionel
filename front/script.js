@@ -47,7 +47,7 @@ async function verifierStatutPaiement(reference) {
         });
 
         const data = await response.json();
-        
+        console.log('Réponse backend statut paiement:', data); // DEBUG
         // Créer ou mettre à jour le message de statut
         let statusMessage = document.getElementById('payment-status-message');
         if (!statusMessage) {
@@ -67,8 +67,8 @@ async function verifierStatutPaiement(reference) {
             document.body.appendChild(statusMessage);
         }
 
-        // Gestion des statuts de paiement
-        if (data.statut === 'payé' || data.emailStatus === 'envoye') {
+        // Gestion des statuts de paiement (plus robuste)
+        if ((data.statut && data.statut !== 'en_attente' && data.statut !== 'échoué') || data.emailStatus === 'envoye') {
             localStorage.setItem('showMailToast', '1');
             statusMessage.style.backgroundColor = '#4CAF50';
             statusMessage.innerHTML = `
@@ -78,7 +78,7 @@ async function verifierStatutPaiement(reference) {
                     </svg>
                     <span>Reçu envoyé avec succès ! Vérifiez votre boîte mail.</span>
                 </div>
-                <div style='font-size:0.95em;margin-top:6px;'>Statut: payé<br>Dernière mise à jour: ${new Date().toLocaleString()}</div>
+                <div style='font-size:0.95em;margin-top:6px;'>Statut: ${data.statut || 'payé'}<br>Dernière mise à jour: ${new Date().toLocaleString()}</div>
             `;
             showToast('Votre reçu a été envoyé par mail !', 'success');
         } else if (data.statut === 'échoué' || data.status === 'failed' || data.emailStatus === 'erreur') {
