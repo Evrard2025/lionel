@@ -18,21 +18,22 @@ app.use(helmet());
 
 // Middleware de sécurité supplémentaire pour headers manquants
 app.use((req, res, next) => {
-    // Content Security Policy (CSP)
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;");
-    // Anti-clickjacking
+    res.setHeader('Content-Security-Policy',
+      "default-src 'self'; " +
+      "script-src 'self'; " +
+      "object-src 'none'; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "img-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com https://boostalab.com https://images.unsplash.com; " +
+      "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+      "connect-src 'self' https://lionel-bzdx.onrender.com;"
+    );
     res.setHeader('X-Frame-Options', 'DENY');
-    // Strict-Transport-Security (HSTS)
     if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
         res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
     }
-    // X-Content-Type-Options
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    // Cache-Control pour les pages sensibles
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    // Masquer l'en-tête Server
     res.removeHeader('Server');
-    // Désactiver x-powered-by
     app.disable('x-powered-by');
     next();
 });
