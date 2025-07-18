@@ -18,15 +18,16 @@ app.use(helmet());
 
 // Middleware de sécurité supplémentaire pour headers manquants
 app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy',
-      "default-src 'self'; " +
-      "script-src 'self'; " +
-      "object-src 'none'; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "img-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com https://boostalab.com https://images.unsplash.com; " +
-      "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
-      "connect-src 'self' https://lionel-bzdx.onrender.com;"
-    );
+    const csp = [
+        "default-src 'self'",
+        "script-src 'self'",
+        "object-src 'none'",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "img-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com https://boostalab.com https://images.unsplash.com",
+        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+        "connect-src 'self' https://lionel-bzdx.onrender.com"
+    ].join('; ');
+    res.setHeader('Content-Security-Policy', csp);
     res.setHeader('X-Frame-Options', 'DENY');
     if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
         res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
