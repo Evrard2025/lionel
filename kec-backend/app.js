@@ -23,6 +23,7 @@ app.use((req, res, next) => {
         "script-src 'self'",
         "object-src 'none'",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "img-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com https://boostalab.com https://images.unsplash.com",
         "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
         "connect-src 'self' https://lionel-bzdx.onrender.com"
