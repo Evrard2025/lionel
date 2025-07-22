@@ -1,8 +1,13 @@
 const User = require('../models/User');
 const Paiement = require('../models/Paiement');
+const { validationResult } = require('express-validator');
 
 // Inscription utilisateur
 exports.registerUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { nom, email, telephone, niveauEtude, formationChoisie } = req.body;
     

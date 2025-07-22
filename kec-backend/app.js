@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const { initDatabase } = require('./config/database');
+const csurf = require('csurf');
 
 // Import des routes
 const userRoutes = require('./routes/userRoutes');
@@ -64,6 +65,17 @@ app.use(cors(corsOptions));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Middleware CSRF (après bodyParser)
+const csrfProtection = csurf({ cookie: false });
+
+// Appliquer CSRF uniquement sur les routes sensibles (POST, PUT, DELETE)
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    return csrfProtection(req, res, next);
+  }
+  next();
+});
 
 // Middleware de logging pour le débogage (uniquement en développement)
 if (process.env.NODE_ENV !== 'production') {

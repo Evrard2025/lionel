@@ -5,6 +5,7 @@ const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const QRCode = require('qrcode');
 const crypto = require('crypto');
+const { validationResult } = require('express-validator');
 
 // Log des variables d'environnement au démarrage
 console.log('[CONFIG] Variables d\'environnement:', {
@@ -15,6 +16,10 @@ console.log('[CONFIG] Variables d\'environnement:', {
 
 // Initialiser un paiement avec YengaPay
 exports.initierPaiement = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { userId, formationId } = req.body;
     
@@ -101,6 +106,10 @@ exports.initierPaiement = async (req, res) => {
 
 // Créer un nouveau paiement
 exports.createPaiement = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { userId, formationId, montant, modePaiement } = req.body;
 

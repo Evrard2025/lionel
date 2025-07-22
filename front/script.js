@@ -136,6 +136,16 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Fonction d'échappement HTML simple
+function escapeHTML(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // Fonction pour charger la formation depuis le backend
 async function chargerFormation() {
     try {
@@ -153,11 +163,11 @@ async function chargerFormation() {
         const formationInfo = document.createElement('div');
         formationInfo.className = 'formation-info';
         formationInfo.innerHTML = `
-            <h2>${formation.titre}</h2>
+            <h2>${escapeHTML(formation.titre)}</h2>
             <!-- <p class="subtitle">${formation.description}</p> -->
-            <p class="tickets-info">Tickets disponibles: ${formation.ticketsDisponibles}/${formation.ticketsTotal}</p>
-            <p class="price-info">Prix: ${formation.prix} Fcfa</p>
-            <p class="duration-info">Durée: ${formation.duree}</p>
+            <p class="tickets-info">Tickets disponibles: ${escapeHTML(formation.ticketsDisponibles)}/${escapeHTML(formation.ticketsTotal)}</p>
+            <p class="price-info">Prix: ${escapeHTML(formation.prix)} Fcfa</p>
+            <p class="duration-info">Durée: ${escapeHTML(formation.duree)}</p>
         `;
 
         // Insérer les informations de formation avant le formulaire
@@ -176,11 +186,11 @@ async function chargerFormation() {
         cardsContainer.innerHTML = `
             <div class="card card-flex">
                 <div class="card-content">
-                    <h3 class="card-title">${formation.titre}</h3>
-                    <p class="card-text">${formation.description}</p>
-                    <p class="card-text">Prix: ${formation.prix} Fcfa</p>
-                    <p class="card-text">Durée: ${formation.duree}</p>
-                    <p class="card-text tickets-info">Tickets disponibles: ${formation.ticketsDisponibles}/${formation.ticketsTotal}</p>
+                    <h3 class="card-title">${escapeHTML(formation.titre)}</h3>
+                    <p class="card-text">${escapeHTML(formation.description)}</p>
+                    <p class="card-text">Prix: ${escapeHTML(formation.prix)} Fcfa</p>
+                    <p class="card-text">Durée: ${escapeHTML(formation.duree)}</p>
+                    <p class="card-text tickets-info">Tickets disponibles: ${escapeHTML(formation.ticketsDisponibles)}/${escapeHTML(formation.ticketsTotal)}</p>
                     <button onclick="document.querySelector('.cta-form').scrollIntoView({behavior: 'smooth'})"
                             class="card-button"
                             ${formation.ticketsDisponibles <= 0 ? 'disabled' : ''}>

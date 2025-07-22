@@ -1,4 +1,5 @@
 const Formation = require('../models/Formation');
+const { validationResult } = require('express-validator');
 
 // Récupérer toutes les formations
 exports.getAllFormations = async (req, res) => {
@@ -14,6 +15,10 @@ exports.getAllFormations = async (req, res) => {
 
 // Créer une formation
 exports.createFormation = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const newFormation = await Formation.create(req.body);
     res.status(201).json(newFormation);
@@ -38,6 +43,10 @@ exports.getFormationById = async (req, res) => {
 
 // Mettre à jour une formation
 exports.updateFormation = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const formation = await Formation.findByPk(req.params.id);
     if (!formation) {
