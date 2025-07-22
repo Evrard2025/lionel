@@ -8,11 +8,13 @@ const crypto = require('crypto');
 const { validationResult } = require('express-validator');
 
 // Log des variables d'environnement au démarrage
-console.log('[CONFIG] Variables d\'environnement:', {
-  MAIL_USER: process.env.MAIL_USER ? 'configuré' : 'non configuré',
-  MAIL_PASS: process.env.MAIL_PASS ? 'configuré' : 'non configuré',
-  YENGA_API_KEY: process.env.YENGA_API_KEY ? 'configuré' : 'non configuré'
-});
+if (process.env.NODE_ENV !== 'production') {
+  console.log('[CONFIG] Variables d\'environnement:', {
+    MAIL_USER: process.env.MAIL_USER ? 'configuré' : 'non configuré',
+    MAIL_PASS: process.env.MAIL_PASS ? 'configuré' : 'non configuré',
+    YENGA_API_KEY: process.env.YENGA_API_KEY ? 'configuré' : 'non configuré'
+  });
+}
 
 // Initialiser un paiement avec YengaPay
 exports.initierPaiement = async (req, res) => {
@@ -207,15 +209,19 @@ async function envoyerRecuPaiement({ email, nom, reference, ticketNumber, format
     console.log('[MAIL] QR code généré (Buffer)');
 
     // Log des variables d'environnement utilisées pour l'email
-    console.log('[MAIL] Variables d\'environnement utilisées:', {
-      MAIL_USER: process.env.MAIL_USER,
-      MAIL_PASS: process.env.MAIL_PASS
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[MAIL] Variables d\'environnement utilisées:', {
+        MAIL_USER: process.env.MAIL_USER,
+        MAIL_PASS: process.env.MAIL_PASS
+      });
+    }
 
     // Chemin du logo
     const path = require('path');
     const logoPath = path.resolve(__dirname, '../../front/logo.png');
-    console.log('[MAIL] Chemin du logo utilisé:', logoPath);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[MAIL] Chemin du logo utilisé:', logoPath);
+    }
 
     // Configurer le transporteur nodemailer (exemple Gmail, à adapter)
     const transporter = nodemailer.createTransport({
@@ -225,7 +231,9 @@ async function envoyerRecuPaiement({ email, nom, reference, ticketNumber, format
         pass: process.env.MAIL_PASS || 'ton_mot_de_passe_app',
       },
     });
-    console.log('[MAIL] Transporteur nodemailer configuré');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[MAIL] Transporteur nodemailer configuré');
+    }
 
     // Email HTML stylé
     const html = `
